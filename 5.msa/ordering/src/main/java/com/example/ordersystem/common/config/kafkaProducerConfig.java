@@ -16,7 +16,7 @@ import java.util.Map;
 @Configuration
 public class kafkaProducerConfig {
 
-    @Value("${spring.kafka.kafka-sever}")
+    @Value("${spring.kafka.kafka-server}")
     private String kafkaServer;
 
     @Bean
