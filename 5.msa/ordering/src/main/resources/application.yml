@@ -20,7 +20,7 @@ spring:
 #      ddl-auto: validate
     show_sql: true
   kafka:
-    kafka-sever: kafka-service:9092  
+    kafka-server: kafka-service:9092  
 
 jwt:
   expiration: 1000
