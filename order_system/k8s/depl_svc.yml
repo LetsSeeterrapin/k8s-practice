@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dick-order-backend
+  namespace: dickjunseo-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dick-order-backend
+  template:
+    metadata:
+      labels:
+        app: dick-order-backend
+    spec:
+      containers:
+      - name: dick-order-backend
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/dick-order-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: dick-app-secrets
+              key: DB_HOST
+        - name: DB_PW
+          valueFrom:
+            secretKeyRef:
+              name: dick-app-secrets
+              key: DB_PW
+        # - name: REDIS_HOST
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: dick-app-secrets
+        #       key: REDIS_HOST
+        - name: AWS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dick-app-secrets
+              key: AWS_KEY
+        - name: AWS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dick-app-secrets
+              key: AWS_SECRET
+        # 컨테이너 상태 확인 
+        readinessProbe:
+          httpGet:
+            # healthcheck 경로
+            path: /product/list
+            port: 8080
+          # 컨테이너 시작 후 지연
+          initialDelaySeconds: 10
+          # 확인 반복 주기
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dick-order-backend-service
+  namespace: dickjunseo
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: dick-order-backend
