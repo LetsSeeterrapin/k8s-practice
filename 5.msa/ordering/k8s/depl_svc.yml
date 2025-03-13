@@ -11,10 +11,10 @@ spec:
   template:
     metadata:
       labels:
-        app: dick-msa-order
+        app: dick-msa-ordering
     spec:
       containers:
-      - name: dick-order-backend
+      - name: dick-msa-ordering
         image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/dick-msa-order:latest
         ports:
         - containerPort: 8080
