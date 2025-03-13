@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ordersystem-ingress
+  namespace: dickjunseo-ns
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1 
+    cert-manager.io/cluster-issuer: my-issuer
+spec:
+  tls:
+  - hosts:
+    - "server.dickjunseo.site"
+    secretName: server-dickjunseo-com-tls
+  rules:
+  - host: server.dickjunseo.site
+    http:
+      paths:
+      - path: /dick-service/(.*) 
+        pathType: Prefix
+        backend:
+          service:
+            name: dick-msa-member-service
+            port:
+              number: 80
+      - path: /ordering-service(.*) 
+        pathType: Prefix
+        backend:
+          service:
+            name: dick-msa-ordering-service
+            port:
+              number: 80
+      - path: /product-service(.*) 
+        pathType: Prefix
+        backend:
+          service:
+            name: dick-msa-product-service
+            port:
+              number: 80
